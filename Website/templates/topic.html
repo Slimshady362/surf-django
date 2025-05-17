@@ -1,0 +1,52 @@
+{% extends 'inherit.html' %}
+{% load static %}
+{% block title %}
+    {% if request.resolver_match.url_name == 'topic_detail' %}
+        {{ topic.name }}
+    {% else %}
+        Topic
+    {% endif %}
+{% endblock title %}
+{% block body %}
+    <section class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header" style="background-color: #2b3035;">
+                        <h1 class="text-center text-white">{{ topic.name }} Resources</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <img src="{% static 'images/'|add:topic.name|add:'.png' %}" alt="{{ topic.name }}" width="100px">
+                        </div>
+                        {% regroup resources by resource_type as resource_list %}
+                        {% for resource_type in resource_list %}
+                            <h2 class="mb-3">{{ resource_type.grouper }} Resources</h2>
+                            <ul class="list-group">
+                                {% for resource in resource_type.list %}
+                                    <li class="list-group-item">
+                                        <a href="{{ resource.url }}">{{ resource.title }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional content for recommending resources -->
+    <section class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <p class="lead mb-4">Want more resources to be added? Click below to recommend!</p>
+                        <a href="/recommend" class="btn btn-primary btn-lg">Recommend!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

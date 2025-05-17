@@ -1,0 +1,40 @@
+{% extends "inherit.html" %}
+{% load static %}  
+{% block title %}Topics{% endblock title %}
+
+{% block body %}
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header" style="background-color: #2b3035;">
+                    <h1 class="text-center text-white">Topics</h1>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for topic in topics %}
+                        <li class="list-group-item d-flex align-items-center">
+                            <img src="{% static 'images/'|add:topic.name|add:'.png' %}" alt="{{ topic.name }}" width="50px">
+                            <div>
+                                <h3><a href="{% url 'topic_detail' topic_name=topic.name %}" class="text-decoration-none text-white">{{ topic.name }}</a></h3>
+                                <!-- Add any additional information about the topic here if needed -->
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Fixed column at the bottom -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body text-center">
+                    <p class="lead mb-4">Want more resources to be added? click below to recommend!</p>
+                    <a href="/recommend" class="btn btn-primary btn-lg">Recommend!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
+{% endblock body %}

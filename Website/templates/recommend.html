@@ -1,0 +1,57 @@
+{% extends "inherit.html" %}
+{% load static %}
+
+{% block title %}Recommend a Resource{% endblock title %}
+
+{% block body %}
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">Recommend a Resource</div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="resource_name" class="form-label">Resource Name</label>
+              <input type="text" class="form-control" id="resource_name" name="resource_name">
+            </div>
+            <div class="mb-3">
+              <label for="resource_type" class="form-label">Resource Type</label>
+              <select class="form-select" id="resource_type" name="resource_type">
+                <option value="video">Video</option>
+                <option value="book">Book</option>
+                <option value="website">Website</option>
+                <option value="custom">Custom</option> <!-- New "Custom" option -->
+              </select>
+            </div>
+            <div id="custom_resource_type_input" class="mb-3" style="display: none;">
+              <label for="custom_resource_type" class="form-label">Custom Resource Type</label>
+              <input type="text" class="form-control" id="custom_resource_type" name="custom_resource_type">
+            </div>
+            <div class="mb-3">
+              <label for="url" class="form-label">URL</label>
+              <input type="url" class="form-control" id="url" name="url">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          <hr>
+          <p>If you are the owner of a website or resource and want to sponsor it, click here:</p>
+          <a href="#" class="btn btn-secondary">Sponsor</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('resource_type').addEventListener('change', function() {
+    var customResourceTypeInput = document.getElementById('custom_resource_type_input');
+    if (this.value === 'custom') {
+      customResourceTypeInput.style.display = 'block';
+    } else {
+      customResourceTypeInput.style.display = 'none';
+    }
+  });
+</script>
+{% endblock body %}

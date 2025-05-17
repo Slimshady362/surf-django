@@ -1,0 +1,111 @@
+{% extends "inherit.html" %}
+{% load static %}
+
+{% block title %}Register{% endblock title %}
+
+{% block body %}
+<style>
+  html,
+  body {
+    height: 100%;
+  }
+
+  .form-signup {
+    max-width: 330px;
+    padding: 1rem;
+  }
+
+  .form-signup .form-floating:focus-within {
+    z-index: 2;
+  }
+
+  .form-signup input {
+    margin-bottom: 10px;
+  }
+</style>
+
+<main class="form-signup w-100 m-auto">
+  <form id="registration-form" method="POST" action="/register/">
+    {% csrf_token %}
+    <img class="mb-4" src="{% static "images/logo1.png" %}" alt="" width="100">
+    <h1 class="h3 mb-3 fw-normal">Register</h1>
+
+    <div class="form-floating">
+      <input type="text" class="form-control" id="floatingInput" placeholder="Enter your name" name="username">
+      <label for="floatingInput">Username</label>
+    </div>
+
+    <div class="form-floating">
+      <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" name="email">
+      <label for="floatingEmail">Email address</label>
+    </div>
+
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password1">
+      <label for="floatingPassword">Password</label>
+    </div>
+
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPasswordConfirm" placeholder="Confirm Password" name="password2">
+      <label for="floatingPasswordConfirm">Confirm Password</label>
+    </div>
+
+    <button class="btn btn-primary w-100 py-2" type="submit">Register</button>
+  </form>
+  
+  <!-- Alert container for displaying error messages -->
+  <div id="alert-container"></div>
+</main>
+
+<script>
+    document.getElementById("registration-form").addEventListener("submit", function(event) {
+      // Check password requirements
+      var password1 = document.getElementById("floatingPassword").value;
+      var password2 = document.getElementById("floatingPasswordConfirm").value;
+      var alertContainer = document.getElementById("alert-container");
+      var alertMessage = "";
+  
+      // Password requirements
+      var minPasswordLength = 8;
+      var commonPasswords = ["password", "123456", "qwerty", "abc123"]; // Add more common passwords as needed
+  
+      if (password1.length < minPasswordLength) {
+        alertMessage += "Password must be at least 8 characters long.<br>";
+      }
+  
+      if (password1 !== password2) {
+        alertMessage += "Passwords do not match.<br>";
+      }
+  
+      if (password1.toLowerCase().includes("password")) {
+        alertMessage += "Password can't contain the word 'password'.<br>";
+      }
+  
+      if (!/\d/.test(password1)) {
+        alertMessage += "Password must contain at least one digit.<br>";
+      }
+  
+      if (/^\d+$/.test(password1)) {
+        alertMessage += "Password can't be entirely numeric.<br>";
+      }
+  
+      // Check if password is similar to other personal information
+      var username = document.getElementById("floatingInput").value.toLowerCase();
+      if (password1.includes(username)) {
+        alertMessage += "Password can't be too similar to your username.<br>";
+      }
+  
+      // Check if password is a commonly used password
+      if (commonPasswords.includes(password1.toLowerCase())) {
+        alertMessage += "Password can't be a commonly used password.<br>";
+      }
+  
+      if (alertMessage) {
+        event.preventDefault(); // Prevent form submission
+        alertContainer.innerHTML = '<div class="alert alert-danger">' + alertMessage + '</div>';
+      }
+    });
+  </script>
+  
+  
+{% endblock body %}
